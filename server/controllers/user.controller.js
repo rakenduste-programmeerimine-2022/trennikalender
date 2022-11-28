@@ -2,6 +2,7 @@ const Joi = require("joi");
 require("dotenv").config();
 const { v4: uuid } = require("uuid");
 const { sendEmail } = require("../helpers/mailer");
+const { forgotpwsendEmail } = require("../helpers/forgotpwmailer");
 const User = require("../models/user.model");
 const { maxAge, generateJwt } = require("../helpers/generateJwt");
 
@@ -15,7 +16,12 @@ exports.Signup = async (req, res) => {
     const result = userSchema.validate(req.body);
     if (result.error) {
       console.log(result.error.message);
-      res.json({ result: "error", message: "Palun kontrolli andmeid!" });
+      return res.json({
+        error: true,
+        status: 400,
+        result: "error",
+        message: "Palun kontrolli andmeid!",
+      });
     }
 
     var user = await User.findOne({
@@ -50,7 +56,7 @@ exports.Signup = async (req, res) => {
   } catch (err) {
     console.error("signup-error", err);
     return res.status(500).json({
-      error: true,
+      err: true,
       message: "Registreerimine ei õnnestunud",
     });
   }
@@ -61,32 +67,36 @@ exports.Login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.json({ result: "error", message: "Valed andmed!" });
+     return res.json({ result: "error", message: "Valed andmed!" });
     }
 
     const user = await User.findOne({ email: email });
 
     if (!user) {
-      res.json({ result: "error", message: "Kasutajat ei leitud!" });
+      return res.json({ result: "error", message: "Kasutajat ei leitud!" });
     }
 
     if (!user.active) {
-      res.json({ result: "error", message: "Konto pole aktiivne!" });
+      return res.json({ result: "error", message: "Konto pole aktiivne!" });
     }
 
     const isValid = await User.comparePasswords(password, user.password);
     if (!isValid) {
-      res.json({ result: "error", message: "Vale parool" });
+      return res.json({result: "error", message: "Vale parool!",});
     }
 
     //luuakse jwt token. helpers/generateJwt
     const token = await generateJwt(user.email, user.userId);
+    const loggeduser = (user.email, user.userId);
+    //await user.save();
 
     res.json({
       result: "success",
       token: token,
+      user: loggeduser,
       message: "Edukalt sisselogitud",
     });
+
   } catch (err) {
     console.error("Login error", err);
     return res.status(500).json({
@@ -101,31 +111,28 @@ exports.Activate = async (req, res) => {
   try {
     const { email, code } = req.body;
     if (!email || !code) {
-      res.json({ result: "error", message: "Andmeid ei õnnestunud töödelda!" });
+      return res.json({ result: "error", message: "Andmeid ei õnnestunud töödelda!" });
     }
     const user = await User.findOne({
       email: email,
       emailToken: code,
     });
     if (!user) {
-      res.json({ result: "error", message: "Valed andmed!" });
+      return res.json({ result: "error", message: "Valed andmed!" });
     } else {
       if (user.active)
-        res.json({ result: "error", message: "Konto on juba aktiivne!" });
+        return res.json({ result: "error", message: "Konto on juba aktiivne!" });
 
       user.emailToken = "";
       user.active = true;
       await user.save();
-      return res.status(200).json({
-        result: "success",
-        message: "Konto aktiveeritud!",
-      });
+      return res.json({result: "success", message: "Konto aktiveeritud!",});
     }
   } catch (err) {
     console.error("activation-error", err);
     return res.status(500).json({
       error: true,
-      message: err.message,
+      message: message,
     });
   }
 };
@@ -135,41 +142,33 @@ exports.ForgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
-      return res.send({
-        status: 400,
-        error: true,
-        message: "Andmeid ei õnnestunud töödelda",
-      });
+      res.json({ result: "error", message: "Andmeid ei õnnestunud töödelda!" });
     }
     const user = await User.findOne({
       email: email,
     });
     if (!user) {
-      return res.send({
-        success: true,
-        message: "Valed andmed!",
-      });
+      res.json({ result: "error", message: "Kasutajat ei leitud!" });
     }
+
     let code = Math.floor(100000 + Math.random() * 900000);
-    let response = await sendEmail(user.email, code);
+    let response = await forgotpwsendEmail(user.email, code);
     if (response.error) {
-      return res.status(500).json({
-        error: true,
-        message: "Emaili ei õnnestunud saata. Palun proovi uuesti.",
-      });
+      res.json({ result: "error", message: "Emaili ei õnnestunud saata. Palun proovi uuesti." });
     }
+
     user.resetPasswordToken = code;
     await user.save();
-    return res.send({
-      success: true,
-      message:
-        "Kui nende andmetega kasutaja on meie süsteemis registreeritud, siis saadame Sulle kinnituskoodi e-mailile!",
+    res.json({
+      result: "success",
+      message: "Saatsime teile parooli taastamiseks e-maili.",
     });
-  } catch (error) {
-    console.error("forgot-password-error", error);
+
+  } catch (err) {
+    console.error("forgot-password-error", err);
     return res.status(500).json({
-      error: true,
-      message: error.message,
+      err: true,
+      message: "Ebaõnnestus, palun proovi uuesti!",
     });
   }
 };
@@ -179,39 +178,31 @@ exports.ResetPassword = async (req, res) => {
   try {
     const { token, newPassword, confirmPassword } = req.body;
     if (!token || !newPassword || !confirmPassword) {
-      return res.status(403).json({
-        error: true,
-        message: "Täida kõik väljad",
-      });
+      res.json({ result: "error", message: "Andmeid ei õnnestunud töödelda!" });
     }
     const user = await User.findOne({
       resetPasswordToken: req.body.token,
     });
     if (!user) {
-      return res.send({
-        error: true,
-        message: "Kinnituskood vale või aegunud.",
-      });
+     res.json({ result: "error", message: "Valed andmed!" });
     }
     if (newPassword !== confirmPassword) {
-      return res.status(400).json({
-        error: true,
-        message: "Paroolid ei kattu",
-      });
+      res.json({ result: "error", message: "Paroolid ei kattu!" });
     }
+    
     const hash = await User.hashPassword(req.body.newPassword);
     user.password = hash;
     user.resetPasswordToken = null;
     await user.save();
-    return res.send({
-      success: true,
-      message: "Parool muudetud!",
+    return res.status(200).json({
+        result: "success",
+        message: "Parool edukalt muudetud!",
     });
-  } catch (error) {
-    console.error("reset-password-error", error);
+  } catch (err) {
+    console.error("reset-password-error", err);
     return res.status(500).json({
-      error: true,
-      message: error.message,
+      err: true,
+      message: err.message,
     });
   }
 };

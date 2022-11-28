@@ -30,8 +30,9 @@ function LoginForm() {
         .then(res => {
           if (res.data.result === "success") {
             const token = res.data.token
+            const user = res.data.user
             localStorage.setItem("token", token)
-           // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
+            localStorage.setItem("user", user)
             swal(
               "Edukalt sisselogitud. Teid suunatakse kohe edasi!",
               res.data.message,

@@ -1,7 +1,11 @@
 import React from "react"
-//import ActivateUser from "../components/Activate"
+import ResetPw from "../components/ResetPassword"
 
 function Reset() {
-  return <></>
+  return (
+    <>
+      <ResetPw />
+    </>
+  )
 }
 export default Reset

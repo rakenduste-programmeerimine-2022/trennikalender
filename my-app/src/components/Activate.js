@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import axios from "axios"
-//import { useNavigate } from "react-router-dom";
-//import swal from "sweetalert";
+import { useNavigate } from "react-router-dom"
+import swal from "sweetalert"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
@@ -13,41 +13,41 @@ import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 
-//AXIOS PATCH. see hetkel ei toimi. Vaja ümber kirjutada, et saaks veateavitused backist fronti kuvama
 //ideaalis võiks olla nii, et saab selle emaili registreerides kaasa, aga see pigem juba peenutsemine minu oskuste juures
 
 const ActivateUser = () => {
-  //const navigate = useNavigate();
-  const [values, setValues] = useState({ email: "", password: "" })
+  const navigate = useNavigate()
+  const [values, setValues] = useState({ email: "", code: "" })
   const theme = createTheme()
-  const [formValue, setformValue] = React.useState({
-    email: "",
-    code: ""
-  })
 
-  const handleChange = event => {
-    setformValue({
-      ...formValue,
-      [event.target.name]: event.target.value
-    })
-  }
-  const handleSubmit = () => {
-    const activationCode = new FormData()
-    activationCode.append("email", formValue.email)
-    activationCode.append("code", formValue.code)
-
-    axios({
-      method: "PATCH",
-      url: "http://localhost:8080/user/activate",
-      data: activationCode,
-      headers: { "Content-Type": "application/json" }
-    })
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+  const handleSubmit = async event => {
+    event.preventDefault()
+    try {
+      console.log(values)
+      axios
+        .patch("http://localhost:8080/user/activate", {
+          ...values
+        })
+        .then(res => {
+          if (res.data.result === "success") {
+            //const token = res.data.token
+            //localStorage.setItem("token", token)
+            // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
+            swal(
+              "Konto edukalt aktiveeritud! Teid suunatakse kohe edasi.",
+              res.data.message,
+              "success"
+            ).then(value => {
+              navigate("/home")
+            })
+          } else if (res.data.result === "error") {
+            swal("Error!", res.data.message, "error")
+          }
+        })
+    } catch (error) {
+      console.log(error)
+      swal("Error!", error, "error")
+    }
   }
 
   return (

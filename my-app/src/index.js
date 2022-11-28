@@ -1,5 +1,4 @@
-//import React from "react"
-//import ReactDOM from "react-dom"
+import { BrowserRouter } from "react-router-dom"
 
 import { StrictMode, React } from "react"
 import "./index.css"
@@ -12,7 +11,9 @@ const root = createRoot(rootElement)
 
 root.render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </StrictMode>
 )
 

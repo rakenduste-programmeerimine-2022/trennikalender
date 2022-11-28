@@ -1,19 +1,14 @@
 import React from "react"
-import { Navigate, Routes } from "react-router-dom"
+import { Outlet, Navigate } from "react-router-dom"
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  function hasJWT() {
-    return localStorage.getItem("token") != null
-  }
-
-  return (
-    <Routes
-      {...rest}
-      render={props =>
-        hasJWT() === true ? <Component {...props} /> : <Navigate to="/login" />
-      }
-    />
-  )
+function hasJWT() {
+  let flag = false
+  localStorage.getItem("token") && localStorage.getItem("user")
+    ? (flag = true)
+    : (flag = false)
+  return flag
 }
 
-export default PrivateRoute
+export default function RouteGuard() {
+  return hasJWT() ? <Outlet /> : <Navigate to="/" />
+}

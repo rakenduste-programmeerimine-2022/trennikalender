@@ -1,7 +1,11 @@
 import React from "react"
-//import ActivateUser from "../components/Activate"
+import ForgotPw from "../components/ForgotPassword"
 
 function Forgot() {
-  return <></>
+  return (
+    <>
+      <ForgotPw />
+    </>
+  )
 }
 export default Forgot
