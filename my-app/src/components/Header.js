@@ -10,6 +10,10 @@ import { AccountCircle } from "@mui/icons-material"
 function NavBar() {
   //const classes = useStyles()
   //const [auth, setAuth] = useState(false)
+  const handleClick = () => {
+    localStorage.clear()
+    window.location.reload()
+  }
 
   return (
     <AppBar
@@ -43,8 +47,8 @@ function NavBar() {
         ></IconButton>
         <Button
           element="Logout"
-          href="/"
           color="inherit"
+          onClick={handleClick}
         >
           Minu trennid
         </Button>

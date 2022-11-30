@@ -207,16 +207,3 @@ exports.ResetPassword = async (req, res) => {
   }
 };
 
-//logi välja
-exports.Logout = async (req, res) => {
-  try {
-    //siia siis tuleb midagi välja mõelda
-    return res.send({ success: true, message: "User Logged out" });
-  } catch (error) {
-    console.error("user-logout-error", error);
-    return res.send({
-      success: true,
-      message: "Ei õnnestunud!",
-    });
-  }
-};

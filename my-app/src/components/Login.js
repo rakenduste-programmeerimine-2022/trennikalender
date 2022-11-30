@@ -130,7 +130,7 @@ function LoginForm() {
                 </Grid>
                 <Grid item>
                   <Link
-                    href="/forgot"
+                    href="/forgotpassword"
                     variant="body2"
                   >
                     {"Unustasin parooli"}
