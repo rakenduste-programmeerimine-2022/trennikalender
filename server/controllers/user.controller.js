@@ -256,6 +256,8 @@ exports.UpdateUser = (req, res) => {
         email : req.body.email,
         name: req.body.name,
         surname: req.body.surname,
+        phonenumber: req.body.phonenumber,
+        level: req.body.level,
       }
     }, function (err, data) {
       if (err){

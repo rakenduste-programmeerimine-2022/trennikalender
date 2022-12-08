@@ -1,9 +1,8 @@
 import React from "react"
-import { AppBar, Toolbar, CssBaseline, Grid } from "@material-ui/core"
+import { AppBar, Toolbar, CssBaseline, makeStyles } from "@material-ui/core"
 import { Button } from "@mui/material"
-import Box from "@mui/material/Box"
-import HomeIcon from "@mui/icons-material/Home"
-import IconButton from "@material-ui/core/IconButton"
+import { Link } from "react-router-dom"
+
 //import { createTheme } from "@mui/material/styles"
 
 const handleClick = () => {
@@ -11,43 +10,65 @@ const handleClick = () => {
   window.location.reload()
 }
 
+const useStyles = makeStyles(theme => ({
+  button: {
+    display: "flex",
+    marginLeft: theme.spacing(5),
+  },
+  navlinks: {
+    marginLeft: theme.spacing(5),
+    marginTom: theme.spacing(2),
+    display: "flex"
+  },
+  logo: {
+    flexGrow: "1",
+    cursor: "pointer"
+  },
+  link: {
+    textDecoration: "none",
+    color: "white",
+    fontSize: "20px",
+    marginLeft: theme.spacing(5),
+    "&:hover": {
+      color: "pink",
+      borderBottom: "2px solid pink"
+    }
+  }
+}))
+
 function NavBar() {
+  const classes = useStyles()
+
   return (
     <AppBar position="static">
       <CssBaseline />
       <Toolbar>
-        <Grid
-          justifyContent="space-between"
-          container
-          spacing={20}
-        >
-          <Grid item>
-            <IconButton
-              href="/"
-              fontSize="large"
-            >
-              <HomeIcon />
-            </IconButton>
-          </Grid>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center"
-            }}
+        <Button
+            type="submit"
+            variant="contained"
+            sx={{bgcolor: "primary.main" }}
+            className={classes.button}
+            onClick={handleClick}
           >
-            <Grid item>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 1, mb: 1, bgcolor: "secondary.main" }}
-                onClick={handleClick}
-              >
-                LOGOUT
-              </Button>
-            </Grid>
-          </Box>
-        </Grid>
+            Logout
+          </Button>
+        <div className={classes.navlinks}>
+          
+          <Link
+            to="/home"
+            className={classes.link}
+          >
+            Home
+          </Link>
+          <Link
+            to="/profile"
+            className={classes.link}
+          >
+            Profile
+          </Link>
+          
+          
+        </div>
       </Toolbar>
     </AppBar>
   )

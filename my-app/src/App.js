@@ -26,6 +26,12 @@ function App() {
             element={<Home />}
           />
         </Route>
+        <Route element={<PrivateRoute />}>
+          <Route
+            path="/profile"
+            element={<UserProfile />}
+          />
+        </Route>
         <Route
           path="/register"
           element={<Register />}
@@ -41,10 +47,6 @@ function App() {
         <Route
           path="/resetpassword"
           element={<Reset />}
-        />
-        <Route
-          path="/profile"
-          element={<UserProfile />}
         />
         <Route
           path="/*"

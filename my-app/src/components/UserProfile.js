@@ -1,46 +1,44 @@
 import axios from "axios"
-import jwt_decode from 'jwt-decode'
+import jwt_decode from "jwt-decode"
 import React, { useEffect, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
-
-
-
-
-
-/*//token = localStorage.getItem("token")
-function parseJwt(token) {
-
-    if (!token) { return; }
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse(window.atob(base64));
-}
-
-console.log(parseJwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhbGx2ZWVAdGx1LmVlIiwiaWQiOiIyOTIwYmQyZC0yYTgyLTQ3YzAtYWFjYS04NmQ2ZWFiZThkNWEiLCJpYXQiOjE2NzA0MzMxOTUsImV4cCI6MTY3MDQzNjc5NX0.XXDo21ORK4m3PD6qZ2Okpj5-1YnLn_skyDXrt65cNH0"))
-*/
-
-
-
+import { useNavigate } from "react-router-dom"
+import swal from "sweetalert"
+import Avatar from "@mui/material/Avatar"
+import Button from "@mui/material/Button"
+import CssBaseline from "@mui/material/CssBaseline"
+import TextField from "@mui/material/TextField"
+import Grid from "@mui/material/Grid"
+import Box from "@mui/material/Box"
+import Person2Icon from "@mui/icons-material/Person2"
+import Typography from "@mui/material/Typography"
+import Container from "@mui/material/Container"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { Select, MenuItem } from "@mui/material"
 
 export default function UserProfile() {
-  //let navigate = useNavigate()
+  const Beginner = "Beginner"
+  const Intermediate = "Intermediate"
+  const Advanced = "Advanced"
+  const navigate = useNavigate()
+  const theme = createTheme()
 
-  //const { id } = "6375e2afe0893ff9fb804c7d"
+  const token = localStorage.getItem("token")
+  const decoded = jwt_decode(token)
+  const id = decoded["id"]
 
-//const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhbGx2ZWVAdGx1LmVlIiwiaWQiOiJfaWQiLCJpYXQiOjE2NzA0ODU2MjQsImV4cCI6MTY3MDQ4OTIyNH0.9BpO0tnRrhHvDNXzoY_LrBogmi_su9eixbSZduxuWjY";
-const token = localStorage.getItem("token")
-const decoded = jwt_decode(token); 
-//console.log(decoded);
-const id = decoded['id'];
-console.log(id);
+  function refreshPage() {
+    window.location.reload(false)
+  }
 
   const [user, setUser] = useState({
     email: "",
     name: "",
-    surname: ""
+    surname: "",
+    phonenumber: "",
+    level: ""
   })
 
-  const { email, name, surname } = user
+  const { email, name, surname, phonenumber, level } = user
 
   const onInputChange = e => {
     setUser({ ...user, [e.target.name]: e.target.value })
@@ -50,95 +48,154 @@ console.log(id);
     loadUser()
   }, [])
 
-  const onSubmit = async (e) => {
+  const onSubmit = async e => {
     e.preventDefault()
     await axios
       .put(`http://localhost:8080/user/update/` + id, user)
       .then(res => {
         console.log(res)
         if (res.data.message === "UPDATED") {
-          //Update here
           setUser(res.data.data)
-          //alert("admin updated")
+          swal("Andmed muudetud!")
+          navigate("/profile")
         }
       })
   }
 
   const loadUser = async () => {
-    const result = await axios.get(`http://localhost:8080/user/`+ id)
+    const result = await axios.get(`http://localhost:8080/user/` + id)
     setUser(result.data)
   }
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-          <h2 className="text-center m-4">Edit User</h2>
+    <ThemeProvider theme={theme}>
+      <Container
+        component="main"
+        maxWidth="xs"
+      >
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+          }}
+        >
+          <Avatar sx={{ xs: 12, m: 1, bgcolor: "secondary.main" }}>
+            <Person2Icon />
+          </Avatar>
 
-          <form onSubmit={e => onSubmit(e)}>
-            <div className="mb-3">
-              <label
-                htmlFor="Name"
-                className="form-label"
-              >
-                Name
-              </label>
-              <input
-                type={"text"}
-                className="form-control"
-                placeholder="Enter your name"
-                name="name"
-                value={name}
-                onChange={e => onInputChange(e)}
-              />
-            </div>
-            <div className="mb-3">
-              <label
-                htmlFor="Username"
-                className="form-label"
-              >
-                Surname
-              </label>
-              <input
-                type={"text"}
-                className="form-control"
-                placeholder="Enter your surname"
-                name="username"
-                value={surname}
-                onChange={e => onInputChange(e)}
-              />
-            </div>
-            <div className="mb-3">
-              <label
-                htmlFor="Email"
-                className="form-label"
-              >
-                E-mail
-              </label>
-              <input
-                type={"text"}
-                className="form-control"
-                placeholder="Enter your e-mail address"
-                name="email"
-                value={email}
-                onChange={e => onInputChange(e)}
-              />
-            </div>
-            <button
-              type="submit"
-              className="btn btn-outline-primary"
+          <Typography
+            component="h1"
+            variant="h5"
+          >
+            Minu profiil
+          </Typography>
+
+          <Box
+            component="form"
+            onSubmit={e => onSubmit(e)}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Name"
+              name="name"
+              value={name}
+              onChange={e => onInputChange(e)}
+              autoFocus
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="surname"
+              label="Surname"
+              value={surname}
+              type=""
+              id="surname"
+              onChange={e => onInputChange(e)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="email"
+              label="Email"
+              value={email}
+              type="email"
+              id="email"
+              onChange={e => onInputChange(e)}
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="phonenumber"
+              label="Phone number"
+              value={phonenumber}
+              type="text"
+              id="phonenumber"
+              onChange={e => onInputChange(e)}
+            />
+            <Select
+              id="level"
+              required
+              name="level"
+              type="text"
+              value={level}
+              label="Player level"
+              onChange={e => onInputChange(e)}
             >
-              Submit
-            </button>
-            <Link
-              className="btn btn-outline-danger mx-2"
-              to="/"
-            >
-              Cancel
-            </Link>
-          </form>
-        </div>
-      </div>
-    </div>
+              <MenuItem value={Beginner}>Beginner</MenuItem>
+              <MenuItem value={Intermediate}>Intermediate</MenuItem>
+              <MenuItem value={Advanced}>Advanced</MenuItem>
+            </Select>
+
+            <>
+              <Grid
+                container
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              >
+                <Grid
+                  item
+                  xs={3}
+                >
+                  <Button
+                    type="submit"
+                    onClick={refreshPage}
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2, bgcolor: "primary.main" }}
+                  >
+                    Salvesta
+                  </Button>
+                </Grid>
+                <Grid
+                  item
+                  xs={3}
+                >
+                  <Button
+                    onClick={refreshPage}
+                    fullWidth
+                    variant="outlined"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Loobu
+                  </Button>
+                </Grid>
+              </Grid>
+            </>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   )
 }
