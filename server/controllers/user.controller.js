@@ -67,34 +67,44 @@ exports.Login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-     return res.json({ result: "error", message: "Valed andmed!" });
+     return res.json({ 
+      result: "error", 
+      message: "Valed andmed!" });
     }
 
     const user = await User.findOne({ email: email });
-
+    
     if (!user) {
-      return res.json({ result: "error", message: "Kasutajat ei leitud!" });
+      return res.json({ 
+        result: "error", 
+        message: "Kasutajat ei leitud!" });
     }
-
     if (!user.active) {
-      return res.json({ result: "error", message: "Konto pole aktiivne!" });
+      return res.json({ 
+        result: "error", 
+        message: "Konto pole aktiivne!" });
     }
-
     const isValid = await User.comparePasswords(password, user.password);
     if (!isValid) {
-      return res.json({result: "error", message: "Vale parool!",});
+      return res.json({
+        result: "error", 
+        message: "Vale parool!"});
     }
 
     //luuakse jwt token. helpers/generateJwt
-    const token = await generateJwt(user.email, user.userId);
-    const loggeduser = (user.email, user.userId);
-    //await user.save();
+    const { error, token } = await generateJwt(user.email, user._id);
+    if (error) {
+      return res.json({
+        result: "error", 
+        message: "JWT tokeni loomine ebaõnnestus!"});
+    }
+    const loggeduser = (user.email, user._id);
 
-    res.json({
+    return res.json({
       result: "success",
-      token: token,
       user: loggeduser,
       message: "Edukalt sisselogitud",
+      accessToken: token
     });
 
   } catch (err) {
@@ -111,28 +121,36 @@ exports.Activate = async (req, res) => {
   try {
     const { email, code } = req.body;
     if (!email || !code) {
-      return res.json({ result: "error", message: "Andmeid ei õnnestunud töödelda!" });
+      return res.json({ 
+        result: "error", 
+        message: "Andmeid ei õnnestunud töödelda!" });
     }
     const user = await User.findOne({
       email: email,
       emailToken: code,
     });
     if (!user) {
-      return res.json({ result: "error", message: "Valed andmed!" });
+      return res.json({ 
+        result: "error", 
+        message: "Valed andmed!" });
     } else {
       if (user.active)
-        return res.json({ result: "error", message: "Konto on juba aktiivne!" });
+        return res.json({ 
+          result: "error", 
+          message: "Konto on juba aktiivne!" });
 
       user.emailToken = "";
       user.active = true;
       await user.save();
-      return res.json({result: "success", message: "Konto aktiveeritud!",});
+      return res.json({
+        result: "success", 
+        message: "Konto aktiveeritud!",});
     }
   } catch (err) {
     console.error("activation-error", err);
     return res.status(500).json({
       error: true,
-      message: message,
+      message: "Konto aktiveerimine ei õnnestunud",
     });
   }
 };
@@ -142,19 +160,25 @@ exports.ForgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
-      res.json({ result: "error", message: "Andmeid ei õnnestunud töödelda!" });
+      res.json({ 
+        result: "error", 
+        message: "Andmeid ei õnnestunud töödelda!" });
     }
     const user = await User.findOne({
       email: email,
     });
     if (!user) {
-      res.json({ result: "error", message: "Kasutajat ei leitud!" });
+      res.json({ 
+        result: "error", 
+        message: "Kasutajat ei leitud!" });
     }
 
     let code = Math.floor(100000 + Math.random() * 900000);
     let response = await forgotpwsendEmail(user.email, code);
     if (response.error) {
-      res.json({ result: "error", message: "Emaili ei õnnestunud saata. Palun proovi uuesti." });
+      res.json({ 
+        result: "error", 
+        message: "Emaili ei õnnestunud saata. Palun proovi uuesti." });
     }
 
     user.resetPasswordToken = code;
@@ -167,7 +191,7 @@ exports.ForgotPassword = async (req, res) => {
   } catch (err) {
     console.error("forgot-password-error", err);
     return res.status(500).json({
-      err: true,
+      error: true,
       message: "Ebaõnnestus, palun proovi uuesti!",
     });
   }
@@ -178,16 +202,22 @@ exports.ResetPassword = async (req, res) => {
   try {
     const { token, newPassword, confirmPassword } = req.body;
     if (!token || !newPassword || !confirmPassword) {
-      res.json({ result: "error", message: "Andmeid ei õnnestunud töödelda!" });
+      res.json({ 
+        result: "error", 
+        message: "Andmeid ei õnnestunud töödelda!" });
     }
     const user = await User.findOne({
       resetPasswordToken: req.body.token,
     });
     if (!user) {
-     res.json({ result: "error", message: "Valed andmed!" });
+     res.json({ 
+      result: "error", 
+      message: "Valed andmed!" });
     }
     if (newPassword !== confirmPassword) {
-      res.json({ result: "error", message: "Paroolid ei kattu!" });
+      res.json({ 
+        result: "error", 
+        message: "Paroolid ei kattu!" });
     }
     
     const hash = await User.hashPassword(req.body.newPassword);
@@ -201,9 +231,60 @@ exports.ResetPassword = async (req, res) => {
   } catch (err) {
     console.error("reset-password-error", err);
     return res.status(500).json({
-      err: true,
-      message: err.message,
+      error: true,
+      message: "Parooli muutmine ei õnnestunud",
     });
   }
 };
 
+
+//get user by id
+exports.UserProfile = (req, res) => {
+    User.findOne({ "_id": req.params.id }, (error, result) => {
+        if(error) {
+            return res.status(500).send(error);
+        }
+        return res.send(result);
+    });
+};
+
+
+
+exports.UpdateUser = (req, res) => {
+ User.findOneAndUpdate({"_id": req.params.id},{
+      $set:{
+        email : req.body.email,
+        name: req.body.name,
+        surname: req.body.surname,
+      }
+    }, function (err, data) {
+      if (err){
+        res.status(500).send(err)
+    } else {
+      res.status(200).send({message: 'UPDATED', data: data})
+    }
+    })
+  }
+
+
+
+  
+/*const updateTodo = (req, res) => {
+    User.findOneAndUpdate(
+      { _id: req.params.userID },
+      {
+        $set: {
+          title: req.body.title,
+          description: req.body.description,
+          completed: req.body.completed,
+        },
+      },
+      { new: true },
+      (err, Todo) => {
+        if (err) {
+          res.send(err);
+        } else res.json(Todo);
+      }
+    );
+  };
+*/

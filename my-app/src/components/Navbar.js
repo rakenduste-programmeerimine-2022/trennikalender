@@ -2,10 +2,9 @@ import React from "react"
 import { AppBar, Toolbar, CssBaseline, Grid } from "@material-ui/core"
 import { Button } from "@mui/material"
 import Box from "@mui/material/Box"
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home"
 import IconButton from "@material-ui/core/IconButton"
 //import { createTheme } from "@mui/material/styles"
-
 
 const handleClick = () => {
   localStorage.clear()
@@ -38,8 +37,10 @@ function NavBar() {
           >
             <Grid item>
               <Button
-                color="error"
+                type="submit"
+                fullWidth
                 variant="contained"
+                sx={{ mt: 1, mb: 1, bgcolor: "secondary.main" }}
                 onClick={handleClick}
               >
                 LOGOUT

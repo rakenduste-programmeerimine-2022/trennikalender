@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar"
 import Reset from "./pages/resetpw"
 import Forgot from "./pages/forgotpw"
 import Activate from "./pages/activateaccount"
+import UserProfile from "./components/UserProfile"
 
 import PageNotFound from "./pages/notfound"
 
@@ -40,6 +41,10 @@ function App() {
         <Route
           path="/resetpassword"
           element={<Reset />}
+        />
+        <Route
+          path="/profile"
+          element={<UserProfile />}
         />
         <Route
           path="/*"
