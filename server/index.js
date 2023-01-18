@@ -8,7 +8,7 @@ require("dotenv").config();
 
 //app.use(cors());
 
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.auw3fso.mongodb.net/?retryWrites=true&w=majority`;
+const uri = "mongodb+srv://baroumi:baroumi@cluster0.mqoset0.mongodb.net/?retryWrites=true&w=majority";
 mongoose
   .connect(uri)
   .then(() => console.log("Database connection established"))

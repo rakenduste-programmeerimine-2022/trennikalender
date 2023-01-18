@@ -1,15 +1,9 @@
-//import React from "react"
-//import React  /*,{useState} */ from 'react'
-import Box from "@mui/material/Box"
-
-
 import React, {useState} from 'react'
-import Kalender from "../components/kalender"
-//import ReactDOM from 'react-dom'
-//import Scheduler from "react-mui-scheduler"
+import ReactDOM from 'react-dom'
+import Scheduler from "react-mui-scheduler"
 
 
-/*function Home() {
+function Kalender() {
   const [state] = useState({
     options: {
       transitionMode: "zoom", // or fade
@@ -119,43 +113,6 @@ import Kalender from "../components/kalender"
   )
 }
 
-ReactDOM.render(<Home />, document.querySelector('#root'))
+ReactDOM.render(<Kalender />, document.querySelector('#Kalender'))
 
-export default Home; */
-
-
-function Home() {
-  return (
-    <>
-      <Box
-        id= "Kalender"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
-          gap: "25px",
-          height: "51.5vh"
-        }}
-      >
-        <>
-          <main>
-            <h2>Who are we?</h2>
-            <p>That feels like an existential question, don't you think?</p>
-          </main>
-        </>
-      </Box>
-    </>
-  )
-}
-
-export default Home
-
-
-/*const Kalender = () => {
-  return(
-    <Kalender/>
-  );
-}
-*/
-
+export default Kalender; 

@@ -38,13 +38,13 @@ exports.Signup = async (req, res) => {
     result.value.password = hash;
     let code = Math.floor(100000 + Math.random() * 900000);
 
-    const sendCode = await sendEmail(result.value.email, code);
+    /*const sendCode = await sendEmail(result.value.email, code);
     if (sendCode.error) {
       res.json({
         result: "error",
         message: "Kinnitusmeili ei õnnestunud saata",
       });
-    }
+    }*/
     result.value.emailToken = code;
     const newUser = new User(result.value);
     await newUser.save();
