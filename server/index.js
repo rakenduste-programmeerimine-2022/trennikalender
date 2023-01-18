@@ -45,6 +45,16 @@ app.use((req, res, next) => {
 const userRoutes = require("./routes/user.routes");
 app.use("/user", userRoutes);
 
+//kalendri routes ja use siia
+
+const calendarRoutes = require("./routes/calendar.routes");
+app.use("/calendar", calendarRoutes);
+
+//admin routes
+
+
+
+
 app.get("*", (req, res) => {
   res.send("404");
 });

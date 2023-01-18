@@ -1,1 +1,1 @@
-import Kalender from "./kalender.js"
+//import Kalender from "./kalender.js"

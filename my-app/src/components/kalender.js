@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+/*import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
 import Scheduler from "react-mui-scheduler"
 
@@ -115,4 +115,4 @@ function Kalender() {
 
 ReactDOM.render(<Kalender />, document.querySelector('#Kalender'))
 
-export default Kalender; 
+export default Kalender; */

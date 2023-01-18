@@ -21,6 +21,7 @@
     "lint": "^0.7.0",
     "mongo-sanitize": "^1.1.0",
     "mongoose": "^6.6.5",
+    "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.10.0",
     "nanoid": "^3.3.4",
     "nodemailer": "^6.8.0",
