@@ -14,7 +14,6 @@ import PageNotFound from "./pages/notfound"
 function App() {
   return (
     <>
-      <Navbar />
       <Routes>
         <Route
           path="/"

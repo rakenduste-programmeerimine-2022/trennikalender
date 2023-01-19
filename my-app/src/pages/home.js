@@ -1,5 +1,4 @@
-import Box from "@mui/material/Box"
-
+import Navbar from "../components/Navbar"
 import React, { useState, useCallback } from "react"
 import axios from "axios"
 import swal from "sweetalert"
@@ -44,6 +43,7 @@ export default function home() {
       applyTo="body"
       theme={myTheme}
     >
+      <Navbar />
       <Pivot>
         <PivotItem headerText="Calendar">
           <Calendar

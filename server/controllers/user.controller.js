@@ -29,7 +29,7 @@ exports.Signup = async (req, res) => {
       email: result.value.email,
     });
     if (user) {
-      res.json({ result: "error", message: "Email on juba kasutusel!" });
+      return res.json({ result: "error", message: "Email on juba kasutusel!" });
     }
     const hash = await User.hashPassword(result.value.password);
     const id = uuid();

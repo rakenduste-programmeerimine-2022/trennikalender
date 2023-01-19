@@ -11,9 +11,8 @@ const userSchema = new Schema(
     password: { type: String, required: true },
     resetPasswordToken: { type: String, default: null },
     emailToken: { type: String, default: null },
-    name: { type: String, default: null},
     level: { type: String, default: "Beginner"},
-    phonenumber: { type: String, default: "Beginner"},
+    phonenumber: { type: String, default: null},
     userRole: { type: String, default: "user" },
   },
   {

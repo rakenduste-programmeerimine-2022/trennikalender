@@ -105,6 +105,7 @@ const ResetPw = () => {
               margin="normal"
               required
               fullWidth
+              type="password"
               id="newPassword"
               label="Uus parool"
               name="newPassword"
@@ -117,6 +118,7 @@ const ResetPw = () => {
               margin="normal"
               required
               fullWidth
+              type="password"
               id="confirmPassword"
               label="Kinnita uus parool"
               name="confirmPassword"
