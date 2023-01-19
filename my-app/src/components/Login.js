@@ -29,9 +29,9 @@ function LoginForm() {
         })
         .then(res => {
           if (res.data.result === "success") {
-            const token = res.data.token
+            const token = res.data.accessToken
             const user = res.data.user
-            localStorage.setItem("token", token)
+            localStorage.setItem("token", JSON.stringify(token))
             localStorage.setItem("user", user)
             swal(
               "Edukalt sisselogitud. Teid suunatakse kohe edasi!",

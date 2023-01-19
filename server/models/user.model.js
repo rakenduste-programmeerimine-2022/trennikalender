@@ -5,11 +5,15 @@ const userSchema = new Schema(
   {
     userId: { type: String, unique: true, required: true },
     email: { type: String, required: true, unique: true },
+    name: { type: String, default: "nimi"},
+    surname: { type: String, default: "perenimi"},
     active: { type: Boolean, default: false },
     password: { type: String, required: true },
     resetPasswordToken: { type: String, default: null },
     emailToken: { type: String, default: null },
-    //accessToken: { type: String, default: null },
+    name: { type: String, default: null},
+    level: { type: String, default: "Beginner"},
+    phonenumber: { type: String, default: "Beginner"},
     userRole: { type: String, default: "user" },
   },
   {
