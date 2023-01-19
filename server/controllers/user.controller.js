@@ -271,23 +271,3 @@ exports.UpdateUser = (req, res) => {
 
 
 
-  
-/*const updateTodo = (req, res) => {
-    User.findOneAndUpdate(
-      { _id: req.params.userID },
-      {
-        $set: {
-          title: req.body.title,
-          description: req.body.description,
-          completed: req.body.completed,
-        },
-      },
-      { new: true },
-      (err, Todo) => {
-        if (err) {
-          res.send(err);
-        } else res.json(Todo);
-      }
-    );
-  };
-*/

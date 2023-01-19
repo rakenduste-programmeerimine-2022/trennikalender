@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { ViewState, EditingState } from "@devexpress/dx-react-scheduler";
+import React, { useState } from "react"
+import PropTypes from "prop-types"
+import { ViewState, EditingState } from "@devexpress/dx-react-scheduler"
 import {
   Scheduler,
   MonthView,
@@ -17,12 +17,12 @@ import {
   ConfirmationDialog,
   CurrentTimeIndicator,
   DragDropProvider
-} from "@devexpress/dx-react-scheduler-material-ui";
+} from "@devexpress/dx-react-scheduler-material-ui"
 
 function Calendar(props) {
-  const { data, onCurrentDateChange, onCommitChanges } = props;
+  const { data, onCurrentDateChange, onCommitChanges } = props
 
-  const [currentViewName, setCurrentViewName] = useState("Week");
+  const [currentViewName, setCurrentViewName] = useState("Week")
 
   return (
     <Scheduler data={data}>
@@ -33,16 +33,31 @@ function Calendar(props) {
       />
       <EditingState onCommitChanges={onCommitChanges} />
       <ConfirmationDialog />
-      <DayView startDayHour={0.0} endDayHour={24.0} cellDuration={60} />
-      <WeekView startDayHour={0.0} endDayHour={24.0} cellDuration={60} />
-      <MonthView startDayHour={0.0} endDayHour={24.0} />
+      <DayView
+        startDayHour={0.0}
+        endDayHour={24.0}
+        cellDuration={60}
+      />
+      <WeekView
+        startDayHour={0.0}
+        endDayHour={24.0}
+        cellDuration={60}
+      />
+      <MonthView
+        startDayHour={0.0}
+        endDayHour={24.0}
+      />
       <Appointments />
       <AllDayPanel />
       <Toolbar />
       <DateNavigator />
       <TodayButton />
       <ViewSwitcher />
-      <AppointmentTooltip showOpenButton showCloseButton showDeleteButton />
+      <AppointmentTooltip
+        showOpenButton
+        showCloseButton
+        showDeleteButton
+      />
       <DragDropProvider />
       <CurrentTimeIndicator
         shadePreviousCells={true}
@@ -51,7 +66,7 @@ function Calendar(props) {
       />
       <AppointmentForm />
     </Scheduler>
-  );
+  )
 }
 
 Calendar.propTypes = {
@@ -59,10 +74,10 @@ Calendar.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   onCurrentDateChange: PropTypes.func.isRequired,
   onCommitChanges: PropTypes.func.isRequired
-};
+}
 
 Calendar.defaultProps = {
   data: []
-};
+}
 
-export default Calendar;
+export default Calendar

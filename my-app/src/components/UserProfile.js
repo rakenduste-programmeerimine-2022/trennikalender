@@ -25,6 +25,7 @@ export default function UserProfile() {
   const token = localStorage.getItem("token")
   const decoded = jwt_decode(token)
   const id = decoded["id"]
+  console.log(id)
 
   function refreshPage() {
     window.location.reload(false)
