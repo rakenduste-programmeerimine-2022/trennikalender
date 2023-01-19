@@ -1,6 +1,5 @@
-//import React from "react"
-//import React  /*,{useState} */ from 'react'
 import Box from "@mui/material/Box"
+<<<<<<< HEAD
 
 
 import React, {useState, useCallback} from 'react'
@@ -86,3 +85,32 @@ function saveEvent(data) {
 }
 
 
+=======
+import React from "react"
+
+function Home() {
+  return (
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          gap: "25px",
+          height: "51.5vh"
+        }}
+      >
+        <>
+          <main>
+            <h2>Who are we?</h2>
+            <p>That feels like an existential question, don't you think?</p>
+          </main>
+        </>
+      </Box>
+    </>
+  )
+}
+
+export default Home
+>>>>>>> parent of 9952545 (Kalender commentina hetkel)
