@@ -39,13 +39,13 @@ exports.Signup = async (req, res) => {
     result.value.password = hash;
     let code = Math.floor(100000 + Math.random() * 900000);
 
-    /*const sendCode = await sendEmail(result.value.email, code);
+    const sendCode = await sendEmail(result.value.email, code);
     if (sendCode.error) {
-      res.json({
+      return res.json({
         result: "error",
         message: "Kinnitusmeili ei õnnestunud saata",
       });
-    }*/
+    }
     result.value.emailToken = code;
     const newUser = new User(result.value);
     await newUser.save();
@@ -57,7 +57,7 @@ exports.Signup = async (req, res) => {
   } catch (err) {
     console.error("signup-error", err);
     return res.status(500).json({
-      err: true,
+      error: true,
       message: "Registreerimine ei õnnestunud",
     });
   }

@@ -71,4 +71,40 @@ Commands.propTypes = {
   onCommandClick: PropTypes.func.isRequired
 };
 
+function onCommitChanges() {
+  const navigate = useNavigate()
+  const [values, setValues] = useState({ email: "", password: "" })
+  const theme = createTheme()
+
+  const handleSubmit = async event => {
+    event.preventDefault()
+    try {
+      console.log(values)
+      axios
+        .post("http://localhost:8080/Calendar/CreateEvent", {
+          ...values
+        })
+        .then(res => {
+          if (res.data.result === "success") {
+            const token = res.data.token
+            const calendar = res.data.calendar
+            localStorage.setItem("token", token)
+            localStorage.setItem("Calendar", calendar)
+            swal(
+              "Edukalt event lisatud",
+              res.data.message,
+              "success"
+            ).then(value => {
+              navigate("/home")
+            })
+          } else if (res.data.result === "error") {
+            swal("Error!", res.data.message, "error")
+          }
+        })
+    } catch (error) {
+      console.log(error)
+      swal("Error!", error, "error")
+    }
+  }
+}
 export default Commands;

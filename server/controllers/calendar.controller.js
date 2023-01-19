@@ -15,6 +15,14 @@ exports.CreateEvent = async (req, res) => {
         });
     }
 }
+    catch (err) {
+        console.error("calendarCreate-error", err);
+        return res.status(500).json({
+            err: true,
+            message: "Eventi loomine ei õnnestunud",
+        });
+    }
+}  
 
 
 exports.EventList = async (req, res) => {
@@ -29,7 +37,13 @@ exports.EventList = async (req, res) => {
         });
     }
     }
-    
+    catch (err) {
+        console.error("calendarEventlist-error", err);
+        return res.status(500).json({
+            err: true,
+            message: "Event ei õnnestunud",
+        });
+    }
 }
 
 exports.EventDetail = async (req, res) => {
@@ -42,7 +56,14 @@ exports.EventDetail = async (req, res) => {
               result: "error",
               message: "Palun kontrolli andmeid!",
         });
+        }
     }
+    catch (err) {
+        console.error("calendarDetail-error", err);
+        return res.status(500).json({
+            err: true,
+            message: "Eventi lugemine ei õnnestunud",
+        });
     }
 
 }
