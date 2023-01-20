@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { CommandBar } from "@fluentui/react/lib/CommandBar";
+import React from "react"
+import PropTypes from "prop-types"
+import { CommandBar } from "@fluentui/react/lib/CommandBar"
 
 function Commands(props) {
-  const { onCommandClick } = props;
+  const { onCommandClick } = props
 
   const getItems = () => {
     return [
@@ -14,14 +14,14 @@ function Commands(props) {
         iconProps: {
           iconName: "Add"
         },
-        onClick: (ev) => onCommandClick("Add", ev)
+        onClick: ev => onCommandClick("Add", ev)
       }
-    ];
-  };
+    ]
+  }
 
   const getOverflowItems = () => {
-    return [];
-  };
+    return []
+  }
 
   const getFarItems = () => {
     return [
@@ -31,7 +31,7 @@ function Commands(props) {
         ariaLabel: "Calendar view",
         iconOnly: true,
         iconProps: { iconName: "Calendar" },
-        onClick: (ev) => onCommandClick("Calendar", ev)
+        onClick: ev => onCommandClick("Calendar", ev)
       },
       {
         key: "list",
@@ -39,7 +39,7 @@ function Commands(props) {
         ariaLabel: "List",
         iconOnly: true,
         iconProps: { iconName: "List" },
-        onClick: (ev) => onCommandClick("List", ev)
+        onClick: ev => onCommandClick("List", ev)
       },
       {
         key: "info",
@@ -49,10 +49,10 @@ function Commands(props) {
         iconProps: { iconName: "Info" },
         onClick: () => console.log("Info")
       }
-    ];
-  };
+    ]
+  }
 
-  const overflowProps = { ariaLabel: "More commands" };
+  const overflowProps = { ariaLabel: "More commands" }
 
   return (
     <CommandBar
@@ -64,12 +64,12 @@ function Commands(props) {
       primaryGroupAriaLabel="Email actions"
       farItemsGroupAriaLabel="More actions"
     />
-  );
+  )
 }
 
 Commands.propTypes = {
   onCommandClick: PropTypes.func.isRequired
-};
+}
 
 /*function onCommitChanges() {
   const navigate = useNavigate()
@@ -90,13 +90,11 @@ Commands.propTypes = {
             const calendar = res.data.calendar
             localStorage.setItem("token", token)
             localStorage.setItem("Calendar", calendar)
-            swal(
-              "Edukalt event lisatud",
-              res.data.message,
-              "success"
-            ).then(value => {
-              navigate("/home")
-            })
+            swal("Edukalt event lisatud", res.data.message, "success").then(
+              value => {
+                navigate("/home")
+              }
+            )
           } else if (res.data.result === "error") {
             swal("Error!", res.data.message, "error")
           }
@@ -107,5 +105,4 @@ Commands.propTypes = {
     }
   }
 }
-  */
 export default Commands;

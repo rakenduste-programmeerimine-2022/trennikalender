@@ -30,9 +30,6 @@ const ActivateUser = () => {
         })
         .then(res => {
           if (res.data.result === "success") {
-            //const token = res.data.token
-            //localStorage.setItem("token", token)
-            // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
             swal(
               "Konto edukalt aktiveeritud! Teid suunatakse kohe edasi.",
               res.data.message,

@@ -13,7 +13,7 @@ const handleClick = () => {
 const useStyles = makeStyles(theme => ({
   button: {
     display: "flex",
-    marginLeft: theme.spacing(5),
+    marginLeft: theme.spacing(5)
   },
   navlinks: {
     marginLeft: theme.spacing(5),
@@ -44,16 +44,15 @@ function NavBar() {
       <CssBaseline />
       <Toolbar>
         <Button
-            type="submit"
-            variant="contained"
-            sx={{bgcolor: "primary.main" }}
-            className={classes.button}
-            onClick={handleClick}
-          >
-            Logout
-          </Button>
+          type="submit"
+          variant="contained"
+          sx={{ bgcolor: "primary.main" }}
+          className={classes.button}
+          onClick={handleClick}
+        >
+          Logout
+        </Button>
         <div className={classes.navlinks}>
-          
           <Link
             to="/home"
             className={classes.link}
@@ -66,8 +65,6 @@ function NavBar() {
           >
             Profile
           </Link>
-          
-          
         </div>
       </Toolbar>
     </AppBar>

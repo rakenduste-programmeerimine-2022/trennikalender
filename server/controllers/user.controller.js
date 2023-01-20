@@ -29,7 +29,7 @@ exports.Signup = async (req, res) => {
       email: result.value.email,
     });
     if (user) {
-      res.json({ result: "error", message: "Email on juba kasutusel!" });
+      return res.json({ result: "error", message: "Email on juba kasutusel!" });
     }
     const hash = await User.hashPassword(result.value.password);
     const id = uuid();
@@ -269,23 +269,3 @@ exports.UpdateUser = (req, res) => {
 
 
 
-  
-/*const updateTodo = (req, res) => {
-    User.findOneAndUpdate(
-      { _id: req.params.userID },
-      {
-        $set: {
-          title: req.body.title,
-          description: req.body.description,
-          completed: req.body.completed,
-        },
-      },
-      { new: true },
-      (err, Todo) => {
-        if (err) {
-          res.send(err);
-        } else res.json(Todo);
-      }
-    );
-  };
-*/

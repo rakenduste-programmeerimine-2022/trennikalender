@@ -1,26 +1,16 @@
 import Box from "@mui/material/Box"
+<<<<<<< HEAD
 
 
-
-import React, {useState, useEffect , useCallback} from 'react'
+import React, {useState, useCallback} from 'react'
 import axios from "axios"
 import swal from "sweetalert"
 import { createTheme, Pivot, PivotItem, ThemeProvider } from "@fluentui/react";
 import "./styles.css";
 import Calendar from "../components/Kalender/Calendar";
 import List from "../components/Kalender/List";
-//import {data} from "../components/Kalender/data_list_json";
+import { data } from "../components/Kalender/data_list_json";
 
-
-/*function getCalendarData() {
-  axios
-  .get("http://localhost:8080/Calendar/event_list")
-  .then(function (response) {
-    response.data;
-  });
-}*/
-//const data=getCalendarData();
-//console.log(data);
 
 
 
@@ -50,7 +40,7 @@ const myTheme = createTheme({
     black: "#000000",
     white: "#ffffff"
   }
-});
+})
 
 
 export default function home() {
@@ -104,19 +94,26 @@ export default function home() {
 export default function home() {
 
   return (
-    <ThemeProvider applyTo="body" theme={myTheme}>
+    <ThemeProvider
+      applyTo="body"
+      theme={myTheme}
+    >
+      <Navbar />
       <Pivot>
         <PivotItem headerText="Calendar">
-          <Calendar data={data} onCommitChanges={(props) => {
-              saveEvent(props);
-            }}/>
+          <Calendar
+            data={data}
+            onCommitChanges={props => {
+              saveEvent(props)
+            }}
+          />
         </PivotItem>
         <PivotItem headerText="List">
           <List data={data} />
         </PivotItem>
       </Pivot>
     </ThemeProvider>
-  );
+  )
 }
 */
 
@@ -132,11 +129,7 @@ function saveEvent(data) {
       })
       .then(res => {
         if (res.data.result === "success") {
-          swal(
-            "Uus event lisatud.",
-            res.data.message,
-            "success"
-          )
+          swal("Uus event lisatud.", res.data.message, "success")
         } else if (res.data.result === "error") {
           swal("Error!", res.data.message, "error")
         }
@@ -147,3 +140,33 @@ function saveEvent(data) {
   }
 }
 
+
+=======
+import React from "react"
+
+function Home() {
+  return (
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          gap: "25px",
+          height: "51.5vh"
+        }}
+      >
+        <>
+          <main>
+            <h2>Who are we?</h2>
+            <p>That feels like an existential question, don't you think?</p>
+          </main>
+        </>
+      </Box>
+    </>
+  )
+}
+
+export default Home
+>>>>>>> parent of 9952545 (Kalender commentina hetkel)

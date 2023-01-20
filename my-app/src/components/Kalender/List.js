@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { DetailsList, SelectionMode } from "@fluentui/react";
+import React from "react"
+import PropTypes from "prop-types"
+import { DetailsList, SelectionMode } from "@fluentui/react"
 
 function List(props) {
-  const { data } = props;
+  const { data } = props
 
   const columns = [
     {
@@ -28,7 +28,7 @@ function List(props) {
       minWidth: 200,
       maxWidth: 200
     }
-  ];
+  ]
 
   return (
     <>
@@ -42,15 +42,15 @@ function List(props) {
         checkButtonAriaLabel="Row checkbox"
       />
     </>
-  );
+  )
 }
 
 List.propTypes = {
   data: PropTypes.array.isRequired
-};
+}
 
 List.defaultProps = {
   data: []
-};
+}
 
-export default List;
+export default List

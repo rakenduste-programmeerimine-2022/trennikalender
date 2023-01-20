@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { Select, MenuItem } from "@mui/material"
+import Navbar from "../components/Navbar"
 
 export default function UserProfile() {
   const Beginner = "Beginner"
@@ -25,20 +26,21 @@ export default function UserProfile() {
   const token = localStorage.getItem("token")
   const decoded = jwt_decode(token)
   const id = decoded["id"]
+  console.log(id)
 
   function refreshPage() {
     window.location.reload(false)
   }
 
   const [user, setUser] = useState({
-    email: "",
     name: "",
     surname: "",
+    email: "",
     phonenumber: "",
     level: ""
   })
 
-  const { email, name, surname, phonenumber, level } = user
+  const { name, surname, email, phonenumber, level } = user
 
   const onInputChange = e => {
     setUser({ ...user, [e.target.name]: e.target.value })
@@ -69,6 +71,7 @@ export default function UserProfile() {
 
   return (
     <ThemeProvider theme={theme}>
+      <Navbar />
       <Container
         component="main"
         maxWidth="xs"
