@@ -1,20 +1,29 @@
 import Box from "@mui/material/Box"
-<<<<<<< HEAD
 
 
-import React, {useState, useCallback} from 'react'
+
+import React, {useState, useEffect , useCallback} from 'react'
 import axios from "axios"
 import swal from "sweetalert"
 import { createTheme, Pivot, PivotItem, ThemeProvider } from "@fluentui/react";
 import "./styles.css";
 import Calendar from "../components/Kalender/Calendar";
 import List from "../components/Kalender/List";
-import { data } from "../components/Kalender/data_list_json";
+//import {data} from "../components/Kalender/data_list_json";
+
+
+/*function getCalendarData() {
+  axios
+  .get("http://localhost:8080/Calendar/event_list")
+  .then(function (response) {
+    response.data;
+  });
+}*/
+//const data=getCalendarData();
+//console.log(data);
 
 
 
-
-//impordid andmed üle api
 
 const myTheme = createTheme({
   palette: {
@@ -43,7 +52,57 @@ const myTheme = createTheme({
   }
 });
 
+
 export default function home() {
+
+  const [loading, setLoading] = useState(false);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+      const loadPost = async () => {
+
+          // Till the data is fetch using API 
+          // the Loading page will show.
+          setLoading(true);
+
+          // Await make wait until that 
+          // promise settles and return its result
+          const response = await axios.get(
+          "http://localhost:8080/Calendar/event_list");
+
+          // After fetching data stored it in posts state.
+          setPosts(response.data);
+
+          // Closed the loading page
+          setLoading(false);
+      }
+
+      // Call the function
+      loadPost();
+  }, []);
+
+  return (
+    <ThemeProvider applyTo="body" theme={myTheme}>
+      <Pivot>
+        <PivotItem headerText="Calendar">
+          <Calendar data={posts} onCommitChanges={(props) => {
+              saveEvent(props);
+            }}/>
+        </PivotItem>
+        <PivotItem headerText="List">
+          
+                    
+                <List data={posts} />
+                
+        </PivotItem>
+      </Pivot>
+    </ThemeProvider>
+  );
+}
+
+/*
+export default function home() {
+
   return (
     <ThemeProvider applyTo="body" theme={myTheme}>
       <Pivot>
@@ -59,13 +118,17 @@ export default function home() {
     </ThemeProvider>
   );
 }
+*/
+
+
 
 function saveEvent(data) {
+  console.log("123");
+  console.log(data)
   try {
-    console.log(data)
     axios
-      .post("http://localhost:8080/calendar/createEvent", {
-        ...data
+      .post("http://localhost:8080/Calendar/create_event", data, {
+        //...data
       })
       .then(res => {
         if (res.data.result === "success") {
@@ -84,33 +147,3 @@ function saveEvent(data) {
   }
 }
 
-
-=======
-import React from "react"
-
-function Home() {
-  return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
-          gap: "25px",
-          height: "51.5vh"
-        }}
-      >
-        <>
-          <main>
-            <h2>Who are we?</h2>
-            <p>That feels like an existential question, don't you think?</p>
-          </main>
-        </>
-      </Box>
-    </>
-  )
-}
-
-export default Home
->>>>>>> parent of 9952545 (Kalender commentina hetkel)

@@ -7,7 +7,7 @@ const calendarSchema = new Schema(
     notes: {type: String, unique: false, required: false},
     startDate: {type: Date, unique: false, required: true},
     endDate: {type: Date, unique: false, required: true},
-    allDay: {type: Boolean, unique: false, required: false}
+    allDay: {type: Boolean, required: false, default: false}
   },
 
   //Võimalik date format tuleks teha

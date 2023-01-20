@@ -56,10 +56,18 @@ function Calendar(props) {
 
 Calendar.propTypes = {
   data: PropTypes.array.isRequired,
+  isFetching: PropTypes.bool,
+  onCurrentDateChange: PropTypes.func,
+  onCommitChanges: PropTypes.func
+};
+/*
+Calendar.propTypes = {
+  data: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
   onCurrentDateChange: PropTypes.func.isRequired,
   onCommitChanges: PropTypes.func.isRequired
 };
+*/
 
 Calendar.defaultProps = {
   data: []

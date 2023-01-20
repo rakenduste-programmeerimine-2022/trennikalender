@@ -71,7 +71,7 @@ Commands.propTypes = {
   onCommandClick: PropTypes.func.isRequired
 };
 
-function onCommitChanges() {
+/*function onCommitChanges() {
   const navigate = useNavigate()
   const [values, setValues] = useState({ email: "", password: "" })
   const theme = createTheme()
@@ -81,7 +81,7 @@ function onCommitChanges() {
     try {
       console.log(values)
       axios
-        .post("http://localhost:8080/Calendar/CreateEvent", {
+        .post("http://localhost:8080/Calendar/create_Event", {
           ...values
         })
         .then(res => {
@@ -107,4 +107,5 @@ function onCommitChanges() {
     }
   }
 }
+  */
 export default Commands;

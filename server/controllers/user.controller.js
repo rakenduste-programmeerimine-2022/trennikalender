@@ -93,20 +93,18 @@ exports.Login = async (req, res) => {
     }
 
     //luuakse jwt token. helpers/generateJwt
-    const { error, token } = await generateJwt(user.email, user._id);
-    if (error) {
-      return res.json({
-        result: "error", 
-        message: "JWT tokeni loomine ebaõnnestus!"});
-    }
-    const loggeduser = (user.email, user._id);
+    const token = await generateJwt(user.email, user.userId);
+    const loggeduser = (user.email, user.userId);
+    //await user.save();
 
-    return res.json({
+    res.json({
       result: "success",
+      token: token,
       user: loggeduser,
       message: "Edukalt sisselogitud",
-      accessToken: token
     });
+
+
 
   } catch (err) {
     console.error("Login error", err);
